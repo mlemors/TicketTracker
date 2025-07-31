@@ -4,6 +4,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using TicketTracker.Services;
 using TicketTracker.ViewModels;
+using System.IO;
 
 namespace TicketTracker.Views;
 
@@ -51,6 +52,36 @@ public partial class SettingsView : UserControl
     {
         _themeService.CurrentTheme = ThemeService.Theme.Dark;
         CloseDropdown();
+    }
+
+    private void OpenSettingsFileButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            // Verwende den gleichen Pfad wie in MainWindow.xaml.cs
+            var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var settingsPath = Path.Combine(appDataPath, "TicketTracker", "app-settings.json");
+            
+            // Prüfe ob die Datei existiert
+            if (!File.Exists(settingsPath))
+            {
+                MessageBox.Show("Die Settings-Datei wurde noch nicht erstellt. Erstelle zunächst einen Timer, um die Datei zu generieren.", 
+                              "Datei nicht gefunden", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            
+            // Datei im Standard-Editor öffnen
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = settingsPath,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Fehler beim Öffnen der Settings-Datei: {ex.Message}", 
+                          "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void OnThemeChanged(object? sender, ThemeService.Theme theme)
@@ -140,6 +171,7 @@ public partial class SettingsView : UserControl
         SetupButtonHover(SystemThemeOption);
         SetupButtonHover(LightThemeOption);
         SetupButtonHover(DarkThemeOption);
+        SetupButtonHover(OpenSettingsFileButton);
         SetupButtonHover(ResetDataButton);
     }
 
