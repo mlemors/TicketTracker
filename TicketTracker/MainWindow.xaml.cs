@@ -790,6 +790,7 @@ public partial class MainWindow : Window
         SettingsNavButton.Background = (Brush)FindResource("NavigationSelectedBrush");
     }
 
+    // Theme-Wechsel speichern
     private void OnThemeChanged(object? sender, ThemeService.Theme theme)
     {
         // Update settings button state when theme changes
@@ -797,6 +798,7 @@ public partial class MainWindow : Window
             SettingsNavButton.Background = (Brush)FindResource("NavigationSelectedBrush");
         else
             SettingsNavButton.Background = Brushes.Transparent;
+        SaveWindowSettings();
     }
 
     private void LoadWindowSettings()
@@ -821,6 +823,15 @@ public partial class MainWindow : Window
 
                 // Ensure window is visible on screen
                 EnsureWindowIsOnScreen();
+
+                // Theme laden und anwenden
+                if (!string.IsNullOrEmpty(settings.Theme))
+                {
+                    if (_themeService != null && Enum.TryParse<Services.ThemeService.Theme>(settings.Theme, out var loadedTheme))
+                    {
+                        _themeService.CurrentTheme = loadedTheme;
+                    }
+                }
             }
         }
         catch
@@ -855,11 +866,15 @@ public partial class MainWindow : Window
                         settings.WindowHeight = existingSettings.WindowHeight;
                         settings.WindowLeft = existingSettings.WindowLeft;
                         settings.WindowTop = existingSettings.WindowTop;
+                        settings.Theme = existingSettings.Theme;
                     }
                 }
             }
 
             settings.WindowState = WindowState.ToString();
+            // Theme speichern
+            if (_themeService != null)
+                settings.Theme = _themeService.CurrentTheme.ToString();
 
             // Ensure directory exists
             Directory.CreateDirectory(SettingsDirectory);
@@ -1116,6 +1131,7 @@ public partial class MainWindow : Window
         public double WindowLeft { get; set; } = 100;
         public double WindowTop { get; set; } = 100;
         public string WindowState { get; set; } = "Normal";
+        public string Theme { get; set; } = "System";
     }
 
     private class TimerData

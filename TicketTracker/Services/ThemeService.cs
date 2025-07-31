@@ -61,8 +61,7 @@ public class ThemeService
     {
         try
         {
-            const string registryKeyPath =
-                @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+            const string registryKeyPath = @"HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize";
             const string registryValueName = "AppsUseLightTheme";
 
             var registryValueObject = Registry.GetValue(registryKeyPath, registryValueName, null);
