@@ -79,86 +79,8 @@ public partial class StopwatchView : UserControl
 
     private void AnimateTimerChange(string newTimerName)
     {
-        // Skip animation for initial load or when going to empty state
-        if (_previousTimerName == null || _previousTimerName == newTimerName ||
-            newTimerName == "Wählen Sie einen Timer aus")
-        {
-            _previousTimerName = newTimerName;
-            return;
-        }
-
-        // When switching FROM empty state to first timer, use smooth fade-in like settings page
-        if (_previousTimerName == "Wählen Sie einen Timer aus")
-        {
-            _previousTimerName = newTimerName;
-
-            // Smooth fade-in animation like settings page
-            var fadeInAnimation = new DoubleAnimation
-            {
-                From = 0.0,
-                To = 1.0,
-                Duration = TimeSpan.FromMilliseconds(150),
-                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
-            };
-
-            BeginAnimation(OpacityProperty, fadeInAnimation);
-            return;
-        }
-
-        // Determine animation direction based on timer position in list
-        var slideDown = ShouldSlideDown(_previousTimerName, newTimerName);
-
-        // Create slide out animation with opacity to hide content changes
-        var slideOutAnimation = new DoubleAnimation
-        {
-            From = 0,
-            To = slideDown ? -ActualHeight : ActualHeight,
-            Duration = TimeSpan.FromMilliseconds(200),
-            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
-        };
-
-        // Also fade out during slide to hide any content flicker
-        var fadeOutAnimation = new DoubleAnimation
-        {
-            From = 1.0,
-            To = 0.3,
-            Duration = TimeSpan.FromMilliseconds(200),
-            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
-        };
-
-        slideOutAnimation.Completed += (s, e) =>
-        {
-            // Reset position to opposite side
-            ContentTransform.Y = slideDown ? ActualHeight : -ActualHeight;
-
-            // Update the timer name so data binding reflects new content
-            _previousTimerName = newTimerName;
-
-            // Slide in from opposite side
-            var slideInAnimation = new DoubleAnimation
-            {
-                From = slideDown ? ActualHeight : -ActualHeight,
-                To = 0,
-                Duration = TimeSpan.FromMilliseconds(200),
-                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
-            };
-
-            // Fade back in during slide
-            var fadeInAnimation = new DoubleAnimation
-            {
-                From = 0.3,
-                To = 1.0,
-                Duration = TimeSpan.FromMilliseconds(200),
-                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
-            };
-
-            ContentTransform.BeginAnimation(TranslateTransform.YProperty, slideInAnimation);
-            BeginAnimation(OpacityProperty, fadeInAnimation);
-        };
-
-        // Start slide out animation with fade
-        ContentTransform.BeginAnimation(TranslateTransform.YProperty, slideOutAnimation);
-        BeginAnimation(OpacityProperty, fadeOutAnimation);
+        // Update the timer name without animation
+        _previousTimerName = newTimerName;
     }
 
     private bool ShouldSlideDown(string fromTimerName, string toTimerName)
