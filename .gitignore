@@ -1,0 +1,9 @@
+﻿# Build- und temporäre Dateien
+bin/
+obj/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+

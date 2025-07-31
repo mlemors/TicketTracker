@@ -20,9 +20,10 @@
             <TextBlock FontSize="32"
                        FontWeight="SemiBold"
                        Foreground="{DynamicResource PrimaryTextBrush}"
-                       HorizontalAlignment="Center">
-                <Hyperlink Command="{Binding OpenTicketCommand}">
-                    <Run Text="{Binding Name}" />
+                       HorizontalAlignment="Center"
+                       DataContext="{Binding SelectedTimer}">
+                <Hyperlink Command="{Binding OpenTicketCommand}" Foreground="White">
+                    <Run Text="{Binding Name, Mode=OneWay}" />
                 </Hyperlink>
             </TextBlock>
 

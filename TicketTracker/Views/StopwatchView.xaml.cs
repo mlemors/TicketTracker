@@ -26,11 +26,9 @@ public partial class StopwatchView : UserControl
         // Initialize _previousTimerName with the empty state
         _previousTimerName = "Wählen Sie einen Timer aus";
 
-        // Timer Display und Name binden
+        // Timer Display binden
         TimerDisplay.SetBinding(TextBlock.TextProperty,
             new Binding("MainTimerDisplay"));
-        TimerName.SetBinding(TextBlock.TextProperty,
-            new Binding("MainTimerName"));
 
         // Update start time display when timer changes
         UpdateStartTimeDisplay();
