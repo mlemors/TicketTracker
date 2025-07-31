@@ -3,7 +3,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using TicketTracker.ViewModels;
 
 namespace TicketTracker.Views;
@@ -81,31 +80,6 @@ public partial class StopwatchView : UserControl
     {
         // Update the timer name without animation
         _previousTimerName = newTimerName;
-    }
-
-    private bool ShouldSlideDown(string fromTimerName, string toTimerName)
-    {
-        if (_viewModel == null) return true;
-
-        // Find positions of both timers in the list
-        var fromIndex = -1;
-        var toIndex = -1;
-
-        for (var i = 0; i < _viewModel.Timers.Count; i++)
-        {
-            if (_viewModel.Timers[i].Name == fromTimerName)
-                fromIndex = i;
-            if (_viewModel.Timers[i].Name == toTimerName)
-                toIndex = i;
-        }
-
-        // If we can't find both timers, default to slide down
-        if (fromIndex == -1 || toIndex == -1)
-            return true;
-
-        // If moving to a timer higher in the list (lower index), slide up
-        // If moving to a timer lower in the list (higher index), slide down
-        return toIndex > fromIndex;
     }
 
     private void UpdateDeleteButtonVisibility()

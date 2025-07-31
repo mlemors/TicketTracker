@@ -22,7 +22,7 @@
                        Foreground="{DynamicResource PrimaryTextBrush}"
                        HorizontalAlignment="Center"
                        DataContext="{Binding SelectedTimer}">
-                <Hyperlink Command="{Binding OpenTicketCommand}" Foreground="White">
+                <Hyperlink Command="{Binding OpenTicketCommand}" Foreground="{DynamicResource PrimaryTextBrush}">
                     <Run Text="{Binding Name, Mode=OneWay}" />
                 </Hyperlink>
             </TextBlock>
